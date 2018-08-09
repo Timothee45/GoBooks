@@ -12,15 +12,21 @@ type BookType struct {
 var BookList []Book
 
 func InitDatas() {
-    BookList = append(BookList, Book{ID: 1, Name: "Le livre de la Jungle", BookType: &BookType{Label: "Aventure"}})
-    BookList = append(BookList, Book{ID: 2, Name: "Oui-oui au pays des Kangourous", BookType: &BookType{Label: "Jeunesse"}})
-    BookList = append(BookList, Book{ID: 3, Name: "Cendrillon", BookType: &BookType{Label: "Roman"}})
-    BookList = append(BookList, Book{ID: 4, Name: "L'île au Trésor", BookType: &BookType{Label: "Aventure"}})
+    BookList = append(BookList, Book{ID: 1, Name: "L'île au Trésor", BookType: &BookType{Label: "Aventure"}})
+    BookList = append(BookList, Book{ID: 2, Name: "Le livre de la Jungle", BookType: &BookType{Label: "Aventure"}})
+    BookList = append(BookList, Book{ID: 3, Name: "Oui-oui au pays des Kangourous", BookType: &BookType{Label: "Jeunesse"}})
+    BookList = append(BookList, Book{ID: 4, Name: "Cendrillon", BookType: &BookType{Label: "Roman"}})
     BookList = append(BookList, Book{ID: 5, Name: "Titin et l'Etoile Mystérieuse", BookType: &BookType{Label: "BD"}})
 }
 
 func SelectAllBooks() []Book {
-	return BookList
+	var allBooks []Book
+
+	for _, book := range BookList {
+		allBooks = append(allBooks, book)
+	}
+
+	return allBooks
 }
 
 func SelectBookById(id int) Book {
