@@ -1,0 +1,10 @@
+bin_name
+
+vendor/
+.vscode/
+.idea/
+
+hp/
+
+.DS_Store
+github.com/
