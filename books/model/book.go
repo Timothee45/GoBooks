@@ -1,36 +1,31 @@
 package model
 
+import 	(
+	// "encoding/json"
+	// "fmt"
+	// "log"
+	"books/data"
+)
+
 type Book struct {
 	ID 			int 		`json:"Id,omitempty"`
 	Name		string		`json:"Name,omitempty"`
 	BookType	*BookType	`json:"BookType,omitempty"`
 }
+
 type BookType struct {
 	Label		string		`json:"Label,omitempty"`
 }
 
-var BookList []Book
+func SelectAllBooks() []data.Book {
+	BookList := data.ReadDatas()
 
-func InitDatas() {
-    BookList = append(BookList, Book{ID: 1, Name: "L'île au Trésor", BookType: &BookType{Label: "Aventure"}})
-    BookList = append(BookList, Book{ID: 2, Name: "Le livre de la Jungle", BookType: &BookType{Label: "Aventure"}})
-    BookList = append(BookList, Book{ID: 3, Name: "Oui-oui au pays des Kangourous", BookType: &BookType{Label: "Jeunesse"}})
-    BookList = append(BookList, Book{ID: 4, Name: "Cendrillon", BookType: &BookType{Label: "Roman"}})
-    BookList = append(BookList, Book{ID: 5, Name: "Titin et l'Etoile Mystérieuse", BookType: &BookType{Label: "BD"}})
+	return BookList
 }
 
-func SelectAllBooks() []Book {
-	var allBooks []Book
-
-	for _, book := range BookList {
-		allBooks = append(allBooks, book)
-	}
-
-	return allBooks
-}
-
-func SelectBookById(id int) Book {
-	var foundBook Book
+func SelectBookById(id int) data.Book {
+	BookList := data.ReadDatas()
+	var foundBook data.Book
 
 	for _, book := range BookList {
 		if book.ID == id {
@@ -42,8 +37,9 @@ func SelectBookById(id int) Book {
 	return foundBook
 }
 
-func SelectBookByTypes(bookType string) []Book {
-	var filteredBooks []Book
+func SelectBookByTypes(bookType string) []data.Book {
+	BookList := data.ReadDatas()
+	var filteredBooks []data.Book
 
 	for _, book := range BookList {
 		if book.BookType.Label == bookType {
@@ -54,18 +50,22 @@ func SelectBookByTypes(bookType string) []Book {
 	return filteredBooks
 }
 
-func InsertBook(bookName string, bookType string) Book {
-    bookId := GenerateNewId()
+func InsertBook(bookName string, bookType string) data.Book {
+	BookList := data.ReadDatas()
+    bookId := GenerateNewId(BookList)
 
-	newBook := Book{ID: bookId, Name: bookName, BookType: &BookType{Label: bookType}}
+	newBook := data.Book{ID: bookId, Name: bookName, BookType: &data.BookType{Label: bookType}}
 
 	BookList = append(BookList, newBook)
+
+	data.WriteData(BookList)
 
 	return newBook
 }
 
-func UpdateBookById(id int, bookName string, bookType string) Book {
-	var foundBook Book
+func UpdateBookById(id int, bookName string, bookType string) data.Book {
+	BookList := data.ReadDatas()
+	var foundBook data.Book
 
 	for index, book := range BookList {
 		if book.ID == id {
@@ -79,12 +79,15 @@ func UpdateBookById(id int, bookName string, bookType string) Book {
 		}
 	}
 
+	data.WriteData(BookList)
+
 	return foundBook
 }
 
-func DeleteBook(id int) Book {
-	var newBookList []Book
-	var foundBook Book
+func DeleteBook(id int) data.Book {
+	BookList := data.ReadDatas()
+	var newBookList []data.Book
+	var foundBook data.Book
 
     for _, book := range BookList {
 		if book.ID != id {
@@ -94,15 +97,15 @@ func DeleteBook(id int) Book {
 		}
 	}
 
-	BookList = newBookList
+	data.WriteData(newBookList)
 
 	return foundBook
 }
 
-func GenerateNewId() int {
+func GenerateNewId(bookList []data.Book) int {
 	maxId := 0
 
-	for _, book := range BookList {
+	for _, book := range bookList {
 		if book.ID > maxId {
 			maxId = book.ID
 		}

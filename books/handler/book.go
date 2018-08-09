@@ -8,6 +8,7 @@ import (
 	"strconv"
     "books/model"
     "books/error"
+    "books/data"
 )
 
 func GetBooks(w http.ResponseWriter, r *http.Request) {
@@ -40,7 +41,7 @@ func GetBooksByType(w http.ResponseWriter, r *http.Request) {
 	arrayOrder := r.URL.Query()["order"]
 	params := mux.Vars(r)
 
-	var filteredBooks []model.Book
+	var filteredBooks []data.Book
 
 	filteredBooks = model.SelectBookByTypes(params["type"])
 
@@ -91,7 +92,7 @@ func RemoveBook(w http.ResponseWriter, r *http.Request) {
     }
 }
 
-func OrderBooks(listBooks []model.Book, order string) []model.Book {
+func OrderBooks(listBooks []data.Book, order string) []data.Book {
 	selectedBooks := listBooks
 
 	if order != "" {
@@ -106,14 +107,14 @@ func OrderBooks(listBooks []model.Book, order string) []model.Book {
 }
 
 // NameSorter sorts books by Name.
-type NameSorter []model.Book
+type NameSorter []data.Book
 
 func (a NameSorter) Len() int           { return len(a) }
 func (a NameSorter) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
 func (a NameSorter) Less(i, j int) bool { return a[i].Name < a[j].Name }
 
-func ReverseArray(selectedBooks []model.Book) []model.Book {
-	var orderedBooks []model.Book
+func ReverseArray(selectedBooks []data.Book) []data.Book {
+	var orderedBooks []data.Book
 	nbrBooks := len(selectedBooks) - 1
 
 	for i := nbrBooks; i >= 0; i = i - 1 {
