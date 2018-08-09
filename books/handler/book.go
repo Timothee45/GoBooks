@@ -7,12 +7,8 @@ import (
 	"net/http"
 	"strconv"
     "books/model"
+    "books/error"
 )
-
-type Error struct {
-	Code 		int
-	Label		string
-}
 
 func GetBooks(w http.ResponseWriter, r *http.Request) {
 	arrayOrder := r.URL.Query()["order"]
@@ -36,14 +32,14 @@ func GetBook(w http.ResponseWriter, r *http.Request) {
 
 		json.NewEncoder(w).Encode(foundBook)
     } else {
-		json.NewEncoder(w).Encode(Error{Code: 415, Label: "Incorrect id"})
+		json.NewEncoder(w).Encode(error.IncorrectId)
     }
 }
 
 func GetBooksByType(w http.ResponseWriter, r *http.Request) {
 	arrayOrder := r.URL.Query()["order"]
 	params := mux.Vars(r)
-	
+
 	var filteredBooks []model.Book
 
 	filteredBooks = model.SelectBookByTypes(params["type"])
@@ -77,7 +73,7 @@ func ModifyBook(w http.ResponseWriter, r *http.Request) {
 
 		json.NewEncoder(w).Encode(foundBook)
     } else {
-		json.NewEncoder(w).Encode(Error{Code: 415, Label: "Incorrect id"})
+		json.NewEncoder(w).Encode(error.IncorrectId)
     }
 }
 
@@ -91,7 +87,7 @@ func RemoveBook(w http.ResponseWriter, r *http.Request) {
 
 		json.NewEncoder(w).Encode(foundBook)
     } else {
-		json.NewEncoder(w).Encode(Error{Code: 415, Label: "Incorrect id"})
+		json.NewEncoder(w).Encode(error.IncorrectId)
     }
 }
 
@@ -109,7 +105,7 @@ func OrderBooks(listBooks []model.Book, order string) []model.Book {
 	return selectedBooks
 }
 
-// NameSorter sorts planets by name.
+// NameSorter sorts books by Name.
 type NameSorter []model.Book
 
 func (a NameSorter) Len() int           { return len(a) }
