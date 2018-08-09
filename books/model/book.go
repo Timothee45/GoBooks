@@ -1,9 +1,6 @@
 package model
 
 import 	(
-	// "encoding/json"
-	// "fmt"
-	// "log"
 	"books/data"
 )
 

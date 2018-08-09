@@ -6,7 +6,6 @@ import 	(
 	"fmt"
 	"io/ioutil"
 	"log"
-	// "bytes"
 )
 
 var BOOKS_DATA_PATH = "data/books.json"
@@ -52,15 +51,10 @@ func WriteData(bookList []Book) {
 		log.Fatal(err)
 	}
 
-	// var out bytes.Buffer
-	// json.Indent(&out, b, "", "\t")
-
-	// out.WriteTo(os.Stdout)
-
 	// the WriteFile method returns an error if unsuccessful
-	err1 := ioutil.WriteFile(BOOKS_DATA_PATH, b, 0777)
+	err = ioutil.WriteFile(BOOKS_DATA_PATH, b, 0777)
 	// handle this error
-	if err1 != nil {
+	if err != nil {
 		// print it out
 		fmt.Println(err)
 	}
